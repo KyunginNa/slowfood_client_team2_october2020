@@ -21,13 +21,13 @@ describe("Adding multiple products to an order", () => {
     cy.route({
       method: "POST",
       url: "http://localhost:3000/api/orders",
-      response: 'fixture:first_product_added_to_order.json'
+      response: "fixture:first_product_added_to_order.json",
     });
 
     cy.route({
       method: "PUT",
       url: "http://localhost:3000/api/orders/**",
-      response: 'fixture:second_product_added_to_order.json'
+      response: "fixture:second_product_added_to_order.json",
     });
 
     cy.visit("/");
@@ -39,45 +39,52 @@ describe("Adding multiple products to an order", () => {
   });
 
   it("is expected to get a confirmation message when adding a product to order", () => {
-    cy.get('[data-cy="button"]')
-      .contains("View Order")
-      .should("not.exist");
+    cy.get('[data-cy="view-button"]').should("not.exist");
 
     cy.get('[data-cy="product-2"]').within(() => {
-      cy.get('[data-cy="button"]')
-        .contains("Add to Order")
-        .click();
-      });
-      cy.get('[data-cy="message"]').should(
-        "contain",
-        "Product was successfully added to your order!"
-      );
-    
+      cy.get('[data-cy="button"]').click();
+    });
+    cy.get('[data-cy="message"]').should("contain", "Product was successfully added to your order!"
+    );
 
-    cy.get('[data-cy="button"]')
-      .contains("View order")
-      .should("exist");
+    cy.get('[data-cy="view-button"]').should("exist");
 
     cy.get('[data-cy="product-3"]').within(() => {
-      cy.get('[data-cy="button"]')
-        .contains("Add to Order")
-        .click();
-       });
-      cy.get('[data-cy="message"]').should(
-        "contain",
-        "Product was successfully added to your order!"
-      );
-   
+      cy.get('[data-cy="button"]').click();});
+    cy.get('[data-cy="message"]').should(
+      "contain",
+      "Product was successfully added to your order!"
+    );
 
-    cy.get('[data-cy="button"]')
-      .contains("View order")
-      .click();
+    cy.get('[data-cy="view-button"]').click();
     cy.get('[data-cy="order-details"]').within(() => {
-      cy.get("li").should("have.length", 2);
+      cy.get("li")
+        .should("have.length", 2)
+        .first().should('have.text', 'Entrecôte with chanterelle sauce and potato gratin')
+        .next().should('have.text', 'Reindeer tartare')
     });
-    cy.get('[data-cy="button"]')
-      .contains("View order")
-      .click();
+    cy.get('[data-cy="view-button"]').click();
     cy.get('[data-cy="order-details"]').should("not.exist");
   });
+
+  it("user can finalize the order", () => {
+    cy.get('[data-cy="product-2"]').within(() => {
+      cy.get('[data-cy="button"]').click();
+    });
+    cy.get('[data-cy="product-3"]').within(() => {
+      cy.get('[data-cy="button"]').click();
+    });
+    cy.get('[data-cy="view-button"]').click();
+    cy.route({
+      method: "PUT",
+      url: "http://localhost:3000/api/orders/1",
+      response: { message: "Your order will be ready in 20 minutes" },
+    });
+    cy.get('[data-cy="confirm-button"]').contains("Confirm!").click();
+    cy.get('[data-cy="message"]').should(
+      "contain",
+      "Your order will be ready in 20 minutes"
+    );
+  });
+
 });

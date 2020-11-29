@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { getData } from '../modules/productData'
-import { Header, Item, Button, Icon } from 'semantic-ui-react'
+import { Header, Item, Button, Icon, Divider } from 'semantic-ui-react'
 
 class DisplayMenu extends Component {
   state = {
@@ -21,30 +21,50 @@ class DisplayMenu extends Component {
     if (Array.isArray(this.state.productData) && this.state.productData.length) {
       dataIndex = (
         <div id="menu">
-          {this.state.productData.map(item => {
-            return (
-              <div
-                key={item.id} 
-                data-cy={`product-${item.id}`}
-                id={`product-${item.id}`}
-                data-id={item.id}
-                data-price={item.price}
-              >
-                {`${item.name} ${item.description} ${item.price}`}
-                { localStorage.getItem('authenticated') === 'true' &&
-                  <button
-                    data-cy="button"
-                    onClick={(e) => this.props.addToOrder(e)}
-                  >
-                  Add to Order
-                  </button> 
-                }
-              </div>
-          )
-          })}
-          </div>
+          <Item.Group>
+            {this.state.productData.map(item => {
+              return (
+                <>
+                  <Divider horizontal>~</Divider>
+                  <Item key={item.id} data-cy={`product-${item.id}`}>
+                    <Item.Image size='small' src={`images/image${item.id}.png`} />
+                    <Item.Content verticalAlign="middle"
+                      data-id={item.id}
+                      data-price={item.price}
+                      id={`product-${item.id}`}
+                    >
+                      <Item.Header style={{ fontSize: 20, fontWeight: "bold" }}>{item.name}</Item.Header>
+                      <Item.Meta>{item.price}</Item.Meta>
+                      <Item.Description>{item.description}</Item.Description>
+                      <br/>
+                    
+                    {localStorage.getItem('authenticated') === 'true' &&
+                      <Button
+                        data-cy="button"
+                        animated='fade'
+                        onClick={(e) => this.props.addToOrder(e)}
+                        verticalAlign="middle"
+                        color='pink'
+                      >
+                        <Button.Content visible>
+                          Add to Order
+                    </Button.Content>
+                        <Button.Content hidden>
+                          <Icon name='food' />
+                        </Button.Content>
+                      </Button>
+                    }
+                    </Item.Content>
+                  </Item>
+                </>
+              )
+            })
+            }
+          </Item.Group>
+        </div>
+
       )
-      } else {
+    } else {
       return (
         <Header as='h3' id='no-menu'>
           There is no available menu.
