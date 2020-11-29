@@ -44,9 +44,7 @@ describe("Adding multiple products to an order", () => {
     cy.get('[data-cy="product-2"]').within(() => {
       cy.get('[data-cy="button"]').click();
     });
-    cy.get('[data-cy="message"]').should(
-      "contain",
-      "Product was successfully added to your order!"
+    cy.get('[data-cy="message"]').should("contain", "Product was successfully added to your order!"
     );
 
     cy.get('[data-cy="view-button"]').should("exist");
@@ -68,4 +66,25 @@ describe("Adding multiple products to an order", () => {
     cy.get('[data-cy="view-button"]').click();
     cy.get('[data-cy="order-details"]').should("not.exist");
   });
+
+  it("user can finalize the order", () => {
+    cy.get('[data-cy="product-2"]').within(() => {
+      cy.get('[data-cy="button"]').click();
+    });
+    cy.get('[data-cy="product-3"]').within(() => {
+      cy.get('[data-cy="button"]').click();
+    });
+    cy.get('[data-cy="view-button"]').click();
+    cy.route({
+      method: "PUT",
+      url: "http://localhost:3000/api/orders/1",
+      response: { message: "Your order will be ready in 20 minutes" },
+    });
+    cy.get('[data-cy="confirm-button"]').contains("Confirm!").click();
+    cy.get('[data-cy="message"]').should(
+      "contain",
+      "Your order will be ready in 20 minutes"
+    );
+  });
+
 });

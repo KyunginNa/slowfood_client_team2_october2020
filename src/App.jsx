@@ -7,11 +7,11 @@ import axios from "axios";
 class App extends Component {
   state = {
     authenticated: false,
-    orderID: "",
     message: null,
     productData: [],
     showOrder: false,
-    orderDetails: {}
+    orderDetails: {},
+    orderTotal: "",
   };
 
   toggleAuthenticatedState() {
@@ -22,7 +22,10 @@ class App extends Component {
     let id = e.target.parentElement.dataset.id;
     let headers = JSON.parse(localStorage.getItem("credentials"));
     let response;
-    if (this.state.orderDetails.hasOwnProperty("id")) {
+    if (
+      this.state.orderDetails.hasOwnProperty("id") &&
+      this.state.orderDetails.finalized === false
+    ) {
       response = await axios.put(
         `http://localhost:3000/api/orders/${this.state.orderDetails.id}`,
         { product_id: id },
@@ -38,12 +41,25 @@ class App extends Component {
 
     this.setState({
       message: response.data.message,
-      orderDetails: response.data.order
+      orderDetails: response.data.order,
+    });
+  }
+
+  async finalizeOrder() {
+    let orderTotal = this.state.orderDetails.order_total;
+    let response = await axios.put(
+      `http://localhost:3000/api/orders/${this.state.orderDetails.id}`,
+      { activity: "finalize" }
+    );
+    this.setState({
+      message: response.data.message,
+      orderTotal: orderTotal,
+      orderDetails: {},
     });
   }
 
   render() {
-    let dataIndex, orderDetailsDisplay
+    let dataIndex, orderDetailsDisplay;
     if (this.state.orderDetails.hasOwnProperty("products")) {
       orderDetailsDisplay = this.state.orderDetails.products.map((item) => {
         return <li key={item.name}>{item.name}</li>;
@@ -63,7 +79,7 @@ class App extends Component {
           <Login
             toggleAuthenticatedState={() => this.toggleAuthenticatedState()}
           />
-          {this.state.message && (
+          {this.state.message === 0 && (
             <h2 data-cy="message">{this.state.message}</h2>
           )}
           <DisplayMenu addToOrder={(e) => this.addToOrder(e)} />
@@ -87,8 +103,20 @@ class App extends Component {
           )}
 
           {this.state.showOrder && (
-          <ul data-cy="order-details">{orderDetailsDisplay}</ul>
-        )}
+            <>
+              <ul data-cy="order-details">{orderDetailsDisplay}</ul>
+              <p>
+                To pay:{" "}
+                {this.state.orderDetails.order_total || this.state.orderTotal}{" "}
+              </p>
+              <button
+                data-cy="confirm-button"
+                onClick={this.finalizeOrder.bind(this)}
+              >
+                Confirm!
+              </button>
+            </>
+          )}
           {dataIndex}
         </Container>
       </>
