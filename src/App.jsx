@@ -79,7 +79,7 @@ class App extends Component {
           <Login
             toggleAuthenticatedState={() => this.toggleAuthenticatedState()}
           />
-          {this.state.message === 0 && (
+          {this.state.message !== {} && (
             <h2 data-cy="message">{this.state.message}</h2>
           )}
           <DisplayMenu addToOrder={(e) => this.addToOrder(e)} />
