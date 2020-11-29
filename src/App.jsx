@@ -9,9 +9,9 @@ class App extends Component {
     authenticated: false,
     orderID: "",
     message: null,
-    productData: [] ,
+    productData: [],
     showOrder: false,
-    //orderItemsCount: 0
+    orderDetails: {}
   };
 
   toggleAuthenticatedState() {
@@ -19,14 +19,12 @@ class App extends Component {
   }
 
   async addToOrder(e) {
-    debugger;
-    // let id = e.target.parentElement.dataset.id;
-    let id = e.target.id;
+    let id = e.target.parentElement.dataset.id;
     let headers = JSON.parse(localStorage.getItem("credentials"));
     let response;
-    if (this.state.orderID !== "") {
+    if (this.state.orderDetails.hasOwnProperty("id")) {
       response = await axios.put(
-        `http://localhost:3000/api/orders/${this.state.orderID}`,
+        `http://localhost:3000/api/orders/${this.state.orderDetails.id}`,
         { product_id: id },
         { headers: headers }
       );
@@ -38,19 +36,23 @@ class App extends Component {
       );
     }
 
-    //let count = response.data.order_items.length 
     this.setState({
       message: response.data.message,
-      orderID: response.data.order_id,
-      //orderItemsCount: count
+      orderDetails: response.data.order
     });
-  };
+  }
 
   render() {
-    let dataIndex
+    let dataIndex, orderDetailsDisplay
+    if (this.state.orderDetails.hasOwnProperty("products")) {
+      orderDetailsDisplay = this.state.orderDetails.products.map((item) => {
+        return <li key={item.name}>{item.name}</li>;
+      });
+    } else {
+      orderDetailsDisplay = "Nothing to see";
+    }
     return (
       <>
-      
         <Header as="h1" textAlign="center">
           Moody Foody
         </Header>
@@ -65,37 +67,31 @@ class App extends Component {
             <h2 data-cy="message">{this.state.message}</h2>
           )}
           <DisplayMenu addToOrder={(e) => this.addToOrder(e)} />
-          
-          {this.state.orderID !=="" && (
-            
-            <Button as='div' labelPosition='right'>
+
+          {this.state.orderDetails.hasOwnProperty("products") && (
+            <Button as="div" labelPosition="right">
               <Button
-                color='pink'
-                data-cy="button"
+                color="pink"
+                data-cy="view-button"
                 onClick={() => {
-                  this.setState({ showOrder: !this.state.showOrder});
+                  this.setState({ showOrder: !this.state.showOrder });
                 }}
               >
-                <Icon name='cart' />
+                <Icon name="cart" />
                 View order
               </Button>
-              <Label basic color='pink' pointing='left'>
-                3
-                {/* {this.state.orderItemsCount} */}
+              <Label basic color="pink" pointing="left">
+                3{/* {this.state.orderItemsCount} */}
               </Label>
             </Button>
           )}
+
           {this.state.showOrder && (
-            <ul data-cy="order-details">
-              <li>Item 1</li>
-              <li>Item 2</li>
-            </ul>
-          )}
-
-           {dataIndex}
-
+          <ul data-cy="order-details">{orderDetailsDisplay}</ul>
+        )}
+          {dataIndex}
         </Container>
-       </>
+      </>
     );
   }
 }
