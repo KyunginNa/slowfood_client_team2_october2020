@@ -27,13 +27,13 @@ class App extends Component {
       this.state.orderDetails.finalized === false
     ) {
       response = await axios.put(
-        `http://localhost:3000/api/orders/${this.state.orderDetails.id}`,
+        `/orders/${this.state.orderDetails.id}`,
         { product_id: id },
         { headers: headers }
       );
     } else {
       response = await axios.post(
-        "http://localhost:3000/api/orders",
+        "/orders",
         { product_id: id },
         { headers: headers }
       );
@@ -48,7 +48,7 @@ class App extends Component {
   async finalizeOrder() {
     let orderTotal = this.state.orderDetails.order_total;
     let response = await axios.put(
-      `http://localhost:3000/api/orders/${this.state.orderDetails.id}`,
+      `/orders/${this.state.orderDetails.id}`,
       { activity: "finalize" }
     );
     this.setState({
