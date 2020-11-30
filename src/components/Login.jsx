@@ -14,7 +14,7 @@ class Login extends Component {
       password: e.target.password.value,
       password_confirmation: e.target.password_confirmation.value
     }
-    let response = await axios.post('http://localhost:3000/api/auth', credentials)
+    let response = await axios.post('/auth', credentials)
     const userData = {
       uid: response.headers.uid,
       client: response.headers.client,
