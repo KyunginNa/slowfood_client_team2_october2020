@@ -5,7 +5,7 @@ import * as serviceWorker from "./serviceWorker";
 import axios from "axios";
 import "semantic-ui-css/semantic.min.css"
 
-axios.defaults.baseURL = "http://localhost:3000/api"
+axios.defaults.baseURL = "https://hungry-tigers.herokuapp.com/"
 
 ReactDOM.render(<App />, document.getElementById("root"));
 
