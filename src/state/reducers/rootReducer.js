@@ -1,4 +1,4 @@
-const rootReducer = (state = {}, action) => {
+const rootReducer = (state = { credentials: {} }, action) => {
   switch (action.type) {
     case "GET_PRODUCTS":
       return {
@@ -6,10 +6,10 @@ const rootReducer = (state = {}, action) => {
         products: action.payload,
       };
 
-    case "SET_UID":
+    case "SET_CURRENT_USER":
       return {
         ...state,
-        uid: action.payload,
+        credentials: action.payload,
       };
 
     default:
