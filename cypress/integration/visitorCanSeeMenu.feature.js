@@ -2,7 +2,7 @@ describe("Visitors can see a collection of products", () => {
   beforeEach(() => {
     cy.server();
     cy.route({
-      method: "POST",
+      method: "GET",
       url: "http://localhost:3000/api/products",
       response: "fixture:products_index.json",
     });

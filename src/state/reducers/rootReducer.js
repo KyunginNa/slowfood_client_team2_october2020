@@ -1,7 +1,14 @@
-import initialState from "../store/initialState";
+const rootReducer = (state = {}, action) => {
+  switch (action.type) {
+    case "GET_PRODUCTS":
+      return {
+        ...state,
+        products: action.payload,
+      };
 
-const rootReducer = (state = initialState, action) => {
-  return state;
+    default:
+      return state;
+  }
 };
 
 export default rootReducer;
