@@ -4,6 +4,8 @@ import axios from 'axios'
 
 const DisplayProducts = () => {
   const [orderMessage, setOrderMessasge] = useState()
+  const [orderID, setOrderID] = useState()
+  const [itemsCountMessage, setItemsCountMessage] = useState()
   const dispatch = useDispatch()
   const products = useSelector(state => state.products)
   const credentials = useSelector(state => state.credentials)
@@ -13,13 +15,24 @@ const DisplayProducts = () => {
   }
   useEffect(getProducts, [])
 
-  const addToOrder = async (productID) => {
-    let response = await axios.post(
-      "http://localhost:3000/api/orders",
-      { product_id: productID },
-      { headers: credentials },
-    )
-    setOrderMessasge(response.data.message)
+  const addToOrder = async (productID, productName) => {
+    if (orderID) {
+      let response = await axios.put(`http://localhost:3000/api/orders/${orderID}`,
+        { product_id: productID },
+        { headers: credentials },
+      )
+      setItemsCountMessage(`You have ${response.data.items.length} items in your order.`)
+      setOrderMessasge(`${response.data.message} (1 × ${productName})`)
+    } else {
+      let response = await axios.post(
+        "http://localhost:3000/api/orders",
+        { product_id: productID },
+        { headers: credentials },
+      )
+      setOrderID(response.data.items[0].order_id)
+      setItemsCountMessage(`You have 1 item in your order.`)
+      setOrderMessasge(`${response.data.message} (1 × ${productName})`)
+    }
   }
 
   return (
@@ -36,13 +49,15 @@ const DisplayProducts = () => {
               {product.price}
               <button
                 data-cy={`btn-add-product${product.id}`}
-                onClick={() => addToOrder(product.id)}
+                onClick={() => addToOrder(product.id, product.name)}
               >Add To Order
-          </button>
-            </div>)
+                </button>
+            </div>
+          )
         })}
       </div >
       <p data-cy="order-message">{orderMessage}</p>
+      <p data-cy="items-count-message">{itemsCountMessage}</p>
     </>
   )
 }
