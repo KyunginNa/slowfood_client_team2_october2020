@@ -1,0 +1,34 @@
+{
+  "products": [
+    {
+      "id": 1,
+      "name": "Mandu",
+      "description": "Korean dumplings filled with pork and vegetables",
+      "price": 80.0
+    },
+    {
+      "id": 2,
+      "name": "Bibimbap",
+      "description": "Rice with marinated beef, sliced vegetables and gochujang sauce",
+      "price": 125.0
+    },
+    {
+      "id": 3,
+      "name": "Bulgogi",
+      "description": "Traiditional Korean dish of marinated beef",
+      "price": 150.0
+    },
+    {
+      "id": 4,
+      "name": "Sujeonggwa",
+      "description": "Korean traditional dessert punch with cinnamon, persimmon and pine nuts",
+      "price": 45.5
+    },
+    {
+      "id": 5,
+      "name": "Hodduk",
+      "description": "Sweet pancakes filled with brown sugar syrup",
+      "price": 72.7
+    }
+  ]
+}
