@@ -8,7 +8,7 @@ const UserRegistration = (e) => {
   const [password, setPassword] = useState()
   const [passwordConfirmation, setPasswordConfirmation] = useState()
 
-  const userID = useSelector(state => state.uid)
+  const userID = useSelector(state => state.credentials.uid)
 
   const createAccount = async (e) => {
     e.preventDefault()
@@ -17,9 +17,19 @@ const UserRegistration = (e) => {
       password: password,
       password_confirmation: passwordConfirmation
     })
-    dispatch({ type: "SET_UID", payload: email })
+    const response = await axios.post("http://localhost:3000/api/auth/sign_in", {
+      email: email,
+      password: password
+    })
+    const credentials = {
+      uid: response.headers["uid"],
+      access_token: response.headers["access-token"],
+      token_type: response.headers["token-type"],
+      expiry: response.headers["expiry"],
+      client: response.headers["client"],
+    };
+    dispatch({ type: "SET_CURRENT_USER", payload: credentials })
   }
-
   return (
     <>
       {!userID ? (

@@ -18,7 +18,7 @@ describe("User can add a product to their order", () => {
       method: "POST",
       url: "http://localhost:3000/api/orders",
       response: {
-        message: "A product has been added to your order successfully.",
+        message: "The product has been added to your order successfully.",
       },
     });
     cy.visit("/");
@@ -31,7 +31,7 @@ describe("User can add a product to their order", () => {
     cy.get("[data-cy='btn-add-product1']").click();
     cy.get("[data-cy='order-message']").should(
       "contain",
-      "A product has been added to your order successfully."
+      "The product has been added to your order successfully."
     );
   });
 });

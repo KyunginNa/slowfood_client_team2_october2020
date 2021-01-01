@@ -14,6 +14,15 @@ describe("Visitors can create an account", () => {
         uid: "test@test.com",
       },
     });
+    cy.route({
+      method: "POST",
+      url: "http://localhost:3000/api/auth/sign_in",
+      response: "fixture:successful_login.json",
+      headers: {
+        uid: "test@test.com",
+      },
+    });
+
     cy.visit("/");
   });
 
