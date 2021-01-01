@@ -6,6 +6,12 @@ const rootReducer = (state = {}, action) => {
         products: action.payload,
       };
 
+    case "SET_UID":
+      return {
+        ...state,
+        uid: action.payload,
+      };
+
     default:
       return state;
   }
