@@ -88,7 +88,7 @@ const DisplayProducts = () => {
                   )
                 })}
               </ul>
-              <p>Total Price: {orderDetails.total} </p>
+              <p>Total Price: {orderDetails.total} SEK </p>
             </div>
           }
         </>
