@@ -6,9 +6,14 @@ const DisplayProducts = () => {
   const [orderMessage, setOrderMessasge] = useState()
   const [orderID, setOrderID] = useState()
   const [itemsCountMessage, setItemsCountMessage] = useState()
+  const [orderDetails, setOrderDetails] = useState()
+  const [renderOrder, setRenderOrder] = useState(false)
+
   const dispatch = useDispatch()
+
   const products = useSelector(state => state.products)
   const credentials = useSelector(state => state.credentials)
+
   const getProducts = async () => {
     let products = await axios.get('http://localhost:3000/api/products')
     dispatch({ type: "GET_PRODUCTS", payload: products.data.products })
@@ -21,7 +26,14 @@ const DisplayProducts = () => {
         { product_id: productID },
         { headers: credentials },
       )
-      setItemsCountMessage(`You have ${response.data.items.length} items in your order.`)
+      let totalItems = 0
+      response.data.order.products.map(product => {
+        return (
+          totalItems += product.amount
+        )
+      })
+      setOrderDetails(response.data.order)
+      setItemsCountMessage(`You have ${response.data.order.products.length} items in your order.`)
       setOrderMessasge(`${response.data.message} (1 × ${productName})`)
     } else {
       let response = await axios.post(
@@ -29,7 +41,8 @@ const DisplayProducts = () => {
         { product_id: productID },
         { headers: credentials },
       )
-      setOrderID(response.data.items[0].order_id)
+      setOrderDetails(response.data.order)
+      setOrderID(response.data.order.id)
       setItemsCountMessage(`You have 1 item in your order.`)
       setOrderMessasge(`${response.data.message} (1 × ${productName})`)
     }
@@ -58,6 +71,28 @@ const DisplayProducts = () => {
       </div >
       <p data-cy="order-message">{orderMessage}</p>
       <p data-cy="items-count-message">{itemsCountMessage}</p>
+      { orderDetails &&
+        <>
+          <button
+            data-cy="btn-view-order"
+            onClick={() => setRenderOrder(!renderOrder)}>
+            View Order
+          </button>
+          {
+            renderOrder &&
+          <div data-cy="order-details">
+              <ul>
+                {orderDetails.products.map(item => {
+                  return (
+                    <li key={item.id}>{item.amount} × {item.name}</li>
+                  )
+                })}
+              </ul>
+              <p>Total Price: {orderDetails.total} SEK </p>
+            </div>
+          }
+        </>
+      }
     </>
   )
 }
