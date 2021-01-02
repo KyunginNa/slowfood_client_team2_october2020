@@ -47,9 +47,18 @@ describe("User can add products to their order", () => {
     cy.get("[data-cy='btn-add-product1']").click();
     cy.get("[data-cy='btn-add-product2']").click();
     cy.get("[data-cy='btn-view-order']").click();
-    cy.get("[data-cy='order-list']").within(() => {
+    cy.get("[data-cy='order-details']").within(() => {
       cy.contains("1 × Mandu");
       cy.contains("1 × Bibimbap");
+      cy.contains("Total Price: 205");
     });
+  });
+
+  it("user can hide their order by clicking View Order button", () => {
+    cy.get("[data-cy='btn-add-product1']").click();
+    cy.get("[data-cy='btn-add-product2']").click();
+    cy.get("[data-cy='btn-view-order']").click();
+    cy.get("[data-cy='btn-view-order']").click();
+    cy.get("[data-cy='order-list']").should("not.be.visible");
   });
 });

@@ -7,6 +7,7 @@ const DisplayProducts = () => {
   const [orderID, setOrderID] = useState()
   const [itemsCountMessage, setItemsCountMessage] = useState()
   const [orderDetails, setOrderDetails] = useState()
+  const [renderOrder, setRenderOrder] = useState(false)
 
   const dispatch = useDispatch()
 
@@ -70,20 +71,26 @@ const DisplayProducts = () => {
       </div >
       <p data-cy="order-message">{orderMessage}</p>
       <p data-cy="items-count-message">{itemsCountMessage}</p>
-      { orderDetails && 
+      { orderDetails &&
         <>
-      <button
-        data-cy="btn-view-order"
-      >View Order
-      </button>
-      <ul data-cy="order-list">
-        {orderDetails.products.map(item => {
-          return (
-            <li key={item.id}>{item.amount} × {item.name}</li>
-          )
-        })}
-      </ul>
-        <p>Total Price: {orderDetails.total} </p>
+          <button
+            data-cy="btn-view-order"
+            onClick={() => setRenderOrder(!renderOrder)}>
+            View Order
+          </button>
+          {
+            renderOrder &&
+          <div data-cy="order-details">
+              <ul>
+                {orderDetails.products.map(item => {
+                  return (
+                    <li key={item.id}>{item.amount} × {item.name}</li>
+                  )
+                })}
+              </ul>
+              <p>Total Price: {orderDetails.total} </p>
+            </div>
+          }
         </>
       }
     </>
