@@ -50,7 +50,7 @@ describe("User can add products to their order", () => {
     cy.get("[data-cy='order-details']").within(() => {
       cy.contains("1 × Mandu");
       cy.contains("1 × Bibimbap");
-      cy.contains("Total Price: 205");
+      cy.contains("Total Price: 20");
     });
   });
 

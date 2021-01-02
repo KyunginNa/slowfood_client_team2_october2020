@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
+import CheckOut from './CheckOut'
 import axios from 'axios'
 
 const DisplayProducts = () => {
@@ -8,7 +9,7 @@ const DisplayProducts = () => {
   const [itemsCountMessage, setItemsCountMessage] = useState()
   const [orderDetails, setOrderDetails] = useState()
   const [renderOrder, setRenderOrder] = useState(false)
-  const [orderConfirmMessage, setOrderConfirmMessage] = useState()
+  const [orderFinalized, setOrderFinalized] = useState(false)
 
   const dispatch = useDispatch()
 
@@ -22,7 +23,7 @@ const DisplayProducts = () => {
   useEffect(getProducts, [])
 
   const addToOrder = async (productID, productName) => {
-    if (orderID && !orderConfirmMessage) {
+    if (orderID && !orderFinalized) {
       let response = await axios.put(`http://localhost:3000/api/orders/${orderID}`,
         { product_id: productID },
         { headers: credentials },
@@ -54,7 +55,7 @@ const DisplayProducts = () => {
       { activity: 'finalize' },
       { headers: credentials },
     )
-    setOrderConfirmMessage(response.data.message)
+    setOrderFinalized(response.data.finalized)
     setOrderDetails()
   }
 
@@ -99,19 +100,19 @@ const DisplayProducts = () => {
                     )
                   })}
                 </ul>
-                <p>Total Price: {orderDetails.total} SEK </p>
+                <p>Total Price: {orderDetails.total} USD </p>
                 <button
                   data-cy="btn-confirm-order"
                   onClick={finalizeOrder}>
-                  Confirm Order
+                  Check Out
               </button>
               </div>
             </>
           }
         </>
       }
-      {orderConfirmMessage &&
-        <p data-cy="order-confirm-message">{orderConfirmMessage}</p>
+      {orderFinalized &&
+        <CheckOut credentials={credentials} orderID={orderID} />
       }
     </>
   )
