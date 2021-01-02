@@ -1,12 +1,8 @@
 {
-  "message": "The product has been added to your order successfully.",
-  "items": [
-    {
-      "id": 1,
-      "order_id": 49,
-      "product_id": 105,
-      "created_at": "2021-01-01T21:56:02.435Z",
-      "updated_at": "2021-01-01T21:56:02.435Z"
-    }
-  ]
+  "order": {
+    "id": 38,
+    "products": [{ "amount": 1, "id": 2, "name": "Bibimbap", "total": 125.0 }],
+    "total": 125.0
+  },
+  "message": "The product has been added to your order successfully."
 }

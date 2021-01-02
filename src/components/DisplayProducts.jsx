@@ -21,7 +21,7 @@ const DisplayProducts = () => {
         { product_id: productID },
         { headers: credentials },
       )
-      setItemsCountMessage(`You have ${response.data.items.length} items in your order.`)
+      setItemsCountMessage(`You have ${response.data.order.products.length} items in your order.`)
       setOrderMessasge(`${response.data.message} (1 × ${productName})`)
     } else {
       let response = await axios.post(
@@ -29,7 +29,7 @@ const DisplayProducts = () => {
         { product_id: productID },
         { headers: credentials },
       )
-      setOrderID(response.data.items[0].order_id)
+      setOrderID(response.data.order.id)
       setItemsCountMessage(`You have 1 item in your order.`)
       setOrderMessasge(`${response.data.message} (1 × ${productName})`)
     }
