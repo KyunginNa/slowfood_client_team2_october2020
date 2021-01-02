@@ -8,6 +8,7 @@ const DisplayProducts = () => {
   const [itemsCountMessage, setItemsCountMessage] = useState()
   const [orderDetails, setOrderDetails] = useState()
   const [renderOrder, setRenderOrder] = useState(false)
+  const [orderConfirmMessage, setOrderConfirmMessage] = useState()
 
   const dispatch = useDispatch()
 
@@ -21,7 +22,7 @@ const DisplayProducts = () => {
   useEffect(getProducts, [])
 
   const addToOrder = async (productID, productName) => {
-    if (orderID) {
+    if (orderID && !orderConfirmMessage) {
       let response = await axios.put(`http://localhost:3000/api/orders/${orderID}`,
         { product_id: productID },
         { headers: credentials },
@@ -48,6 +49,15 @@ const DisplayProducts = () => {
     }
   }
 
+  const finalizeOrder = async () => {
+    let response = await axios.put(`http://localhost:3000/api/orders/${orderID}`,
+      { activity: 'finalize' },
+      { headers: credentials },
+    )
+    setOrderConfirmMessage(response.data.message)
+    setOrderDetails()
+  }
+
   return (
     <>
       <div data-cy='products-index'>
@@ -69,10 +79,10 @@ const DisplayProducts = () => {
           )
         })}
       </div >
-      <p data-cy="order-message">{orderMessage}</p>
-      <p data-cy="items-count-message">{itemsCountMessage}</p>
       { orderDetails &&
         <>
+          <p data-cy="order-message">{orderMessage}</p>
+          <p data-cy="items-count-message">{itemsCountMessage}</p>
           <button
             data-cy="btn-view-order"
             onClick={() => setRenderOrder(!renderOrder)}>
@@ -80,18 +90,28 @@ const DisplayProducts = () => {
           </button>
           {
             renderOrder &&
-          <div data-cy="order-details">
-              <ul>
-                {orderDetails.products.map(item => {
-                  return (
-                    <li key={item.id}>{item.amount} × {item.name}</li>
-                  )
-                })}
-              </ul>
-              <p>Total Price: {orderDetails.total} SEK </p>
-            </div>
+            <>
+              <div data-cy="order-details">
+                <ul>
+                  {orderDetails.products.map(item => {
+                    return (
+                      <li key={item.id}>{item.amount} × {item.name}</li>
+                    )
+                  })}
+                </ul>
+                <p>Total Price: {orderDetails.total} SEK </p>
+                <button
+                  data-cy="btn-confirm-order"
+                  onClick={finalizeOrder}>
+                  Confirm Order
+              </button>
+              </div>
+            </>
           }
         </>
+      }
+      {orderConfirmMessage &&
+        <p data-cy="order-confirm-message">{orderConfirmMessage}</p>
       }
     </>
   )
