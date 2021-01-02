@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
+import CheckOut from './CheckOut'
 import axios from 'axios'
 
 const DisplayProducts = () => {
@@ -111,10 +112,7 @@ const DisplayProducts = () => {
         </>
       }
       {orderFinalized &&
-        <form data-cy="payment-form">
-        <labe>Card Number</labe>
-        <input type="text" name="card-number"/>
-        </form>
+        <CheckOut credentials={credentials} orderID={orderID} />
       }
     </>
   )

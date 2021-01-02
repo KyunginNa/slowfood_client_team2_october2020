@@ -54,7 +54,6 @@ describe("User can check out thier order", () => {
         message: "Thank you! Your order will be ready in 20 minutes.",
       },
     });
-
     cy.get("[data-cy='btn-confirm-order']").click();
     cy.get("[data-cy='payment-form']").within(() => {
       cy.get("[data-cy='card-number']").within(() => {
