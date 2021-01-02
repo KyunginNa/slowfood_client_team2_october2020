@@ -2,10 +2,10 @@
   "order": {
     "id": 38,
     "products": [
-      { "amount": 1, "id": 2, "name": "Bibimbap", "total": 125.0 },
-      { "amount": 1, "id": 1, "name": "Mandu", "total": 80.0 }
+      { "amount": 1, "id": 2, "name": "Bibimbap", "total": 12 },
+      { "amount": 1, "id": 1, "name": "Mandu", "total": 8 }
     ],
-    "total": 205.0
+    "total": 20
   },
   "message": "The product has been added to your order successfully."
 }

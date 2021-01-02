@@ -1,8 +1,8 @@
 {
   "order": {
     "id": 38,
-    "products": [{ "amount": 1, "id": 2, "name": "Bibimbap", "total": 125.0 }],
-    "total": 125.0
+    "products": [{ "amount": 1, "id": 2, "name": "Bibimbap", "total": 12 }],
+    "total": 12
   },
   "message": "The product has been added to your order successfully."
 }

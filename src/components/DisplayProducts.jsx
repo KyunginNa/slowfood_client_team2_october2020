@@ -99,7 +99,7 @@ const DisplayProducts = () => {
                     )
                   })}
                 </ul>
-                <p>Total Price: {orderDetails.total} SEK </p>
+                <p>Total Price: {orderDetails.total} USD </p>
                 <button
                   data-cy="btn-confirm-order"
                   onClick={finalizeOrder}>
