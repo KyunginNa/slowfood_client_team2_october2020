@@ -8,7 +8,7 @@ const DisplayProducts = () => {
   const [itemsCountMessage, setItemsCountMessage] = useState()
   const [orderDetails, setOrderDetails] = useState()
   const [renderOrder, setRenderOrder] = useState(false)
-  const [orderConfirmMessage, setOrderConfirmMessage] = useState()
+  const [orderFinalized, setOrderFinalized] = useState(false)
 
   const dispatch = useDispatch()
 
@@ -22,7 +22,7 @@ const DisplayProducts = () => {
   useEffect(getProducts, [])
 
   const addToOrder = async (productID, productName) => {
-    if (orderID && !orderConfirmMessage) {
+    if (orderID && !orderFinalized) {
       let response = await axios.put(`http://localhost:3000/api/orders/${orderID}`,
         { product_id: productID },
         { headers: credentials },
@@ -54,7 +54,7 @@ const DisplayProducts = () => {
       { activity: 'finalize' },
       { headers: credentials },
     )
-    setOrderConfirmMessage(response.data.message)
+    setOrderFinalized(response.data.finalized)
     setOrderDetails()
   }
 
@@ -103,15 +103,18 @@ const DisplayProducts = () => {
                 <button
                   data-cy="btn-confirm-order"
                   onClick={finalizeOrder}>
-                  Confirm Order
+                  Check Out
               </button>
               </div>
             </>
           }
         </>
       }
-      {orderConfirmMessage &&
-        <p data-cy="order-confirm-message">{orderConfirmMessage}</p>
+      {orderFinalized &&
+        <form data-cy="payment-form">
+        <labe>Card Number</labe>
+        <input type="text" name="card-number"/>
+        </form>
       }
     </>
   )

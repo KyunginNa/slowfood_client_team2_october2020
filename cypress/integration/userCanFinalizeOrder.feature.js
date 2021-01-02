@@ -45,14 +45,9 @@ describe("User can finalize their order", () => {
     cy.route({
       method: "PUT",
       url: "http://localhost:3000/api/orders/**",
-      response: {
-        message: "Thank you! Your order will be ready in 20 minutes.",
-      },
+      response: { finalized: true },
     });
     cy.get("[data-cy='btn-confirm-order']").click();
-    cy.get("[data-cy='order-confirm-message']").should(
-      "contain",
-      "Thank you! Your order will be ready in 20 minutes."
-    );
+    cy.get("[data-cy='payment-form']").should("be.visible");
   });
 });
