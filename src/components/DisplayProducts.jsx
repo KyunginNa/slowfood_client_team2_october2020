@@ -5,16 +5,13 @@ import axios from 'axios'
 
 const DisplayProducts = () => {
   const [orderMessage, setOrderMessasge] = useState()
-  const [orderID, setOrderID] = useState()
   const [itemsCountMessage, setItemsCountMessage] = useState()
-  const [orderDetails, setOrderDetails] = useState()
   const [renderOrder, setRenderOrder] = useState(false)
   const [orderFinalized, setOrderFinalized] = useState(false)
 
   const dispatch = useDispatch()
 
-  const products = useSelector(state => state.products)
-  const credentials = useSelector(state => state.credentials)
+  const { products, credentials, orderDetails } = useSelector(state => state)
 
   const getProducts = async () => {
     let products = await axios.get('http://localhost:3000/api/products')
@@ -23,8 +20,8 @@ const DisplayProducts = () => {
   useEffect(getProducts, [])
 
   const addToOrder = async (productID, productName) => {
-    if (orderID && !orderFinalized) {
-      let response = await axios.put(`http://localhost:3000/api/orders/${orderID}`,
+    if (orderDetails && !orderFinalized) {
+      let response = await axios.put(`http://localhost:3000/api/orders/${orderDetails.id}`,
         { product_id: productID },
         { headers: credentials },
       )
@@ -34,7 +31,7 @@ const DisplayProducts = () => {
           totalItems += product.amount
         )
       })
-      setOrderDetails(response.data.order)
+      dispatch({ type: 'SET_ORDER_DETAILS', payload: response.data.order })
       setItemsCountMessage(`You have ${response.data.order.products.length} items in your order.`)
       setOrderMessasge(`${response.data.message} (1 × ${productName})`)
     } else {
@@ -43,20 +40,18 @@ const DisplayProducts = () => {
         { product_id: productID },
         { headers: credentials },
       )
-      setOrderDetails(response.data.order)
-      setOrderID(response.data.order.id)
+      dispatch({ type: 'SET_ORDER_DETAILS', payload: response.data.order })
       setItemsCountMessage(`You have 1 item in your order.`)
       setOrderMessasge(`${response.data.message} (1 × ${productName})`)
     }
   }
 
   const finalizeOrder = async () => {
-    let response = await axios.put(`http://localhost:3000/api/orders/${orderID}`,
+    let response = await axios.put(`http://localhost:3000/api/orders/${orderDetails.id}`,
       { activity: 'finalize' },
       { headers: credentials },
     )
     setOrderFinalized(response.data.finalized)
-    setOrderDetails()
   }
 
   return (
@@ -112,7 +107,7 @@ const DisplayProducts = () => {
         </>
       }
       {orderFinalized &&
-        <CheckOut credentials={credentials} orderID={orderID} />
+        <CheckOut />
       }
     </>
   )
