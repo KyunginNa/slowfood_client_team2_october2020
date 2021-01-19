@@ -1,4 +1,4 @@
-describe("User can add products to their order", () => {
+describe("User can review their order", () => {
   beforeEach(() => {
     cy.server();
     cy.route({
@@ -40,7 +40,7 @@ describe("User can add products to their order", () => {
   });
 
   it("user can't see View Order button before adding products", () => {
-    cy.get("[data-cy='btn-view-order']").should("not.be.visible");
+    cy.get("[data-cy='btn-view-order']").should("not.exist");
   });
 
   it("user can see the list of their order", () => {
@@ -59,6 +59,6 @@ describe("User can add products to their order", () => {
     cy.get("[data-cy='btn-add-product2']").click();
     cy.get("[data-cy='btn-view-order']").click();
     cy.get("[data-cy='btn-view-order']").click();
-    cy.get("[data-cy='order-list']").should("not.be.visible");
+    cy.get("[data-cy='order-list']").should("not.exist");
   });
 });

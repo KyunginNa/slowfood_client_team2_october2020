@@ -8,7 +8,7 @@ const UserRegistration = (e) => {
   const [password, setPassword] = useState()
   const [passwordConfirmation, setPasswordConfirmation] = useState()
 
-  const userID = useSelector(state => state.credentials.uid)
+  const { credentials } = useSelector(state => state)
 
   const createAccount = async (e) => {
     e.preventDefault()
@@ -32,7 +32,7 @@ const UserRegistration = (e) => {
   }
   return (
     <>
-      {!userID ? (
+      {!credentials ? (
         <form>
           <input
             type="email"
@@ -60,7 +60,7 @@ const UserRegistration = (e) => {
           />
         </form>
       ) : (
-          <p data-cy="message">Welcome, {userID}!</p>
+          <p data-cy="message">Welcome, {credentials.uid}!</p>
         )
       }
     </>

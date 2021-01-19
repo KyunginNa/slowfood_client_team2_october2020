@@ -66,11 +66,13 @@ const DisplayProducts = () => {
               {product.name}
               {product.description}
               {product.price}
-              <button
-                data-cy={`btn-add-product${product.id}`}
-                onClick={() => addToOrder(product.id, product.name)}
-              >Add To Order
+              { credentials &&
+                <button
+                  data-cy={`btn-add-product${product.id}`}
+                  onClick={() => addToOrder(product.id, product.name)}
+                >Add To Order
                 </button>
+              }
             </div>
           )
         })}

@@ -1,4 +1,4 @@
-const rootReducer = (state = { credentials: {} }, action) => {
+const rootReducer = (state = { credentials: null }, action) => {
   switch (action.type) {
     case 'GET_PRODUCTS':
       return {
