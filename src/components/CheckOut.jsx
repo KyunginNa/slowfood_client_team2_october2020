@@ -1,32 +1,16 @@
-import React, { useState } from 'react'
+import React from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { CardCVCElement, CardExpiryElement, CardNumberElement, injectStripe } from 'react-stripe-elements'
-import axios from 'axios'
+import stripePayment from '../modules/stripePayment'
 
 const CheckOut = (props) => {
-  const { credentials, orderDetails } = useSelector(state => state)
+  const { credentials, orderDetails, paymentMessage, paid } = useSelector(state => state)
   const dispatch = useDispatch()
 
-  const [paymentMessage, setPaymentMessage] = useState()
-  const [paid, setPaid] = useState(false)
-
   const payWithStripe = async (e) => {
-    debugger
     e.preventDefault()
     let stripeResponse = await props.stripe.createToken()
-    try {
-      debugger
-      const response = await axios.post('http://localhost:3000/api/payments',
-        { order_id: orderDetails.id, stripeToken: stripeResponse.token.id },
-        { headers: credentials },
-      )
-      setPaymentMessage(response.data.message)
-      setPaid(true)
-      dispatch({ type: 'SET_ORDER_DETAILS', payload: null })
-    } catch (err) {
-      console.log(err)
-      setPaymentMessage("Invalid card information. Please try it again.")
-    }
+    stripePayment(orderDetails.id, stripeResponse.token.id, credentials, dispatch)
   }
 
   return (
