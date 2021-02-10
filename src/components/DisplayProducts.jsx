@@ -9,7 +9,7 @@ const DisplayProducts = () => {
   const dispatch = useDispatch()
   const { products, credentials, orderDetails, itemsCountMessage, orderMessage, orderFinalized } = useSelector(state => state)
 
-  useEffect(() => { productServices.getProducts(dispatch) }, [])
+  useEffect(() => { productServices.getProducts(dispatch)}, [dispatch])
   return (
     <>
       <div data-cy='products-index'>

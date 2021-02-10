@@ -52,7 +52,7 @@ const productServices = {
   },
 
   async finalizeOrder(orderDetails, credentials, dispatch) {
-    let response = await axios.put(
+    await axios.put(
       `http://localhost:3000/api/orders/${orderDetails.id}`,
       { activity: 'finalize' },
       { headers: credentials }
