@@ -1,64 +1,15 @@
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import CheckOut from './CheckOut'
-import axios from 'axios'
+import productServices from '../modules/productServices'
 
 const DisplayProducts = () => {
-  const [orderMessage, setOrderMessasge] = useState()
-  const [orderID, setOrderID] = useState()
-  const [itemsCountMessage, setItemsCountMessage] = useState()
-  const [orderDetails, setOrderDetails] = useState()
   const [renderOrder, setRenderOrder] = useState(false)
-  const [orderFinalized, setOrderFinalized] = useState(false)
 
   const dispatch = useDispatch()
+  const { products, credentials, orderDetails, itemsCountMessage, orderMessage, orderFinalized } = useSelector(state => state)
 
-  const products = useSelector(state => state.products)
-  const credentials = useSelector(state => state.credentials)
-
-  const getProducts = async () => {
-    let products = await axios.get('http://localhost:3000/api/products')
-    dispatch({ type: "GET_PRODUCTS", payload: products.data.products })
-  }
-  useEffect(getProducts, [])
-
-  const addToOrder = async (productID, productName) => {
-    if (orderID && !orderFinalized) {
-      let response = await axios.put(`http://localhost:3000/api/orders/${orderID}`,
-        { product_id: productID },
-        { headers: credentials },
-      )
-      let totalItems = 0
-      response.data.order.products.map(product => {
-        return (
-          totalItems += product.amount
-        )
-      })
-      setOrderDetails(response.data.order)
-      setItemsCountMessage(`You have ${response.data.order.products.length} items in your order.`)
-      setOrderMessasge(`${response.data.message} (1 × ${productName})`)
-    } else {
-      let response = await axios.post(
-        "http://localhost:3000/api/orders",
-        { product_id: productID },
-        { headers: credentials },
-      )
-      setOrderDetails(response.data.order)
-      setOrderID(response.data.order.id)
-      setItemsCountMessage(`You have 1 item in your order.`)
-      setOrderMessasge(`${response.data.message} (1 × ${productName})`)
-    }
-  }
-
-  const finalizeOrder = async () => {
-    let response = await axios.put(`http://localhost:3000/api/orders/${orderID}`,
-      { activity: 'finalize' },
-      { headers: credentials },
-    )
-    setOrderFinalized(response.data.finalized)
-    setOrderDetails()
-  }
-
+  useEffect(() => { productServices.getProducts(dispatch)}, [dispatch])
   return (
     <>
       <div data-cy='products-index'>
@@ -71,16 +22,18 @@ const DisplayProducts = () => {
               {product.name}
               {product.description}
               {product.price}
-              <button
-                data-cy={`btn-add-product${product.id}`}
-                onClick={() => addToOrder(product.id, product.name)}
-              >Add To Order
+              {credentials &&
+                <button
+                  data-cy={`btn-add-product${product.id}`}
+                  onClick={() => productServices.addToOrder(orderDetails, orderFinalized, product.id, product.name, credentials, dispatch)}
+                >Add To Order
                 </button>
+              }
             </div>
           )
         })}
       </div >
-      { orderDetails &&
+      {orderDetails &&
         <>
           <p data-cy="order-message">{orderMessage}</p>
           <p data-cy="items-count-message">{itemsCountMessage}</p>
@@ -100,10 +53,10 @@ const DisplayProducts = () => {
                     )
                   })}
                 </ul>
-                <p>Total Price: {orderDetails.total} USD </p>
+                <p>Total Price: {orderDetails.total * 0.01} USD </p>
                 <button
                   data-cy="btn-confirm-order"
-                  onClick={finalizeOrder}>
+                  onClick={() => productServices.finalizeOrder(orderDetails, credentials, dispatch)}>
                   Check Out
               </button>
               </div>
@@ -111,9 +64,7 @@ const DisplayProducts = () => {
           }
         </>
       }
-      {orderFinalized &&
-        <CheckOut credentials={credentials} orderID={orderID} />
-      }
+      <CheckOut />
     </>
   )
 }

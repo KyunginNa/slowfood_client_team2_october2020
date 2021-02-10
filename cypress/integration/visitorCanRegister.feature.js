@@ -22,7 +22,6 @@ describe("Visitors can create an account", () => {
         uid: "test@test.com",
       },
     });
-
     cy.visit("/");
   });
 
