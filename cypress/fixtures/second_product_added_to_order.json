@@ -5,7 +5,7 @@
       { "amount": 1, "id": 2, "name": "Bibimbap", "total": 12 },
       { "amount": 1, "id": 1, "name": "Mandu", "total": 8 }
     ],
-    "total": 20
+    "total": 2000
   },
   "message": "The product has been added to your order successfully."
 }

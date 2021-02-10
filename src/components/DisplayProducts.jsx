@@ -1,59 +1,15 @@
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import CheckOut from './CheckOut'
-import axios from 'axios'
+import productServices from '../modules/productServices'
 
 const DisplayProducts = () => {
-  const [orderMessage, setOrderMessasge] = useState()
-  const [itemsCountMessage, setItemsCountMessage] = useState()
   const [renderOrder, setRenderOrder] = useState(false)
-  const [orderFinalized, setOrderFinalized] = useState(false)
 
   const dispatch = useDispatch()
+  const { products, credentials, orderDetails, itemsCountMessage, orderMessage, orderFinalized } = useSelector(state => state)
 
-  const { products, credentials, orderDetails } = useSelector(state => state)
-
-  const getProducts = async () => {
-    let products = await axios.get('http://localhost:3000/api/products')
-    dispatch({ type: "GET_PRODUCTS", payload: products.data.products })
-  }
-  useEffect(getProducts, [])
-
-  const addToOrder = async (productID, productName) => {
-    if (orderDetails && !orderFinalized) {
-      let response = await axios.put(`http://localhost:3000/api/orders/${orderDetails.id}`,
-        { product_id: productID },
-        { headers: credentials },
-      )
-      let totalItems = 0
-      response.data.order.products.map(product => {
-        return (
-          totalItems += product.amount
-        )
-      })
-      dispatch({ type: 'SET_ORDER_DETAILS', payload: response.data.order })
-      setItemsCountMessage(`You have ${response.data.order.products.length} items in your order.`)
-      setOrderMessasge(`${response.data.message} (1 × ${productName})`)
-    } else {
-      let response = await axios.post(
-        "http://localhost:3000/api/orders",
-        { product_id: productID },
-        { headers: credentials },
-      )
-      dispatch({ type: 'SET_ORDER_DETAILS', payload: response.data.order })
-      setItemsCountMessage(`You have 1 item in your order.`)
-      setOrderMessasge(`${response.data.message} (1 × ${productName})`)
-    }
-  }
-
-  const finalizeOrder = async () => {
-    let response = await axios.put(`http://localhost:3000/api/orders/${orderDetails.id}`,
-      { activity: 'finalize' },
-      { headers: credentials },
-    )
-    setOrderFinalized(response.data.finalized)
-  }
-
+  useEffect(() => { productServices.getProducts(dispatch) }, [])
   return (
     <>
       <div data-cy='products-index'>
@@ -66,10 +22,10 @@ const DisplayProducts = () => {
               {product.name}
               {product.description}
               {product.price}
-              { credentials &&
+              {credentials &&
                 <button
                   data-cy={`btn-add-product${product.id}`}
-                  onClick={() => addToOrder(product.id, product.name)}
+                  onClick={() => productServices.addToOrder(orderDetails, orderFinalized, product.id, product.name, credentials, dispatch)}
                 >Add To Order
                 </button>
               }
@@ -77,7 +33,7 @@ const DisplayProducts = () => {
           )
         })}
       </div >
-      { orderDetails &&
+      {orderDetails &&
         <>
           <p data-cy="order-message">{orderMessage}</p>
           <p data-cy="items-count-message">{itemsCountMessage}</p>
@@ -97,10 +53,10 @@ const DisplayProducts = () => {
                     )
                   })}
                 </ul>
-                <p>Total Price: {orderDetails.total} USD </p>
+                <p>Total Price: {orderDetails.total * 0.01} USD </p>
                 <button
                   data-cy="btn-confirm-order"
-                  onClick={finalizeOrder}>
+                  onClick={() => productServices.finalizeOrder(orderDetails, credentials, dispatch)}>
                   Check Out
               </button>
               </div>
@@ -108,9 +64,7 @@ const DisplayProducts = () => {
           }
         </>
       }
-      {orderFinalized &&
-        <CheckOut />
-      }
+      <CheckOut />
     </>
   )
 }

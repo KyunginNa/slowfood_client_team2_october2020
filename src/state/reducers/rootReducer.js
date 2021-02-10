@@ -14,6 +14,18 @@ const rootReducer = (state = { credentials: null }, action) => {
       return {
         ...state,
         orderDetails: action.payload,
+        orderFinalized: false,
+        paid: false,
+      }
+    case 'SET_ITEMS_COUNT_MESSAGE':
+      return {
+        ...state,
+        itemsCountMessage: action.payload,
+      }
+    case 'SET_ORDER_MESSAGE':
+      return {
+        ...state,
+        orderMessage: action.payload,
       }
     case 'SET_PAYMENT_SUCCESS':
       return {
@@ -26,6 +38,16 @@ const rootReducer = (state = { credentials: null }, action) => {
         ...state,
         paymentMessage: action.payload,
         paid: false,
+      }
+    case 'SET_ORDER_FINALIZED':
+      return {
+        ...state,
+        orderFinalized: true,
+      }
+    case 'RESET_ORDER_DETAILS':
+      return {
+        ...state,
+        orderDetails: action.payload,
       }
     default:
       return state

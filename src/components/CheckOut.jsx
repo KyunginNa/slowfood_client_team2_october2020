@@ -4,7 +4,7 @@ import { CardCVCElement, CardExpiryElement, CardNumberElement, injectStripe } fr
 import stripePayment from '../modules/stripePayment'
 
 const CheckOut = (props) => {
-  const { credentials, orderDetails, paymentMessage, paid } = useSelector(state => state)
+  const { credentials, orderDetails, paymentMessage, paid, orderFinalized } = useSelector(state => state)
   const dispatch = useDispatch()
 
   const payWithStripe = async (e) => {
@@ -15,7 +15,7 @@ const CheckOut = (props) => {
 
   return (
     <>
-      {!paid &&
+      {!paid && orderFinalized &&
         <form data-cy="payment-form">
           <div data-cy="card-number">
             <label>Card Number</label>
@@ -36,7 +36,7 @@ const CheckOut = (props) => {
           </button>
         </form>
       }
-      <p data-cy="payment-message">{paymentMessage}</p>
+      {paid && <p data-cy="payment-message">{paymentMessage}</p>}
     </>
   )
 }
