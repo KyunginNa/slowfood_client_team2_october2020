@@ -49,6 +49,11 @@ const rootReducer = (state = { credentials: null }, action) => {
         ...state,
         orderDetails: action.payload,
       }
+    case 'SET_ERROR_MESSAGE':
+      return {
+        ...state,
+        errorMessage: action.payload,
+      }
     default:
       return state
   }
