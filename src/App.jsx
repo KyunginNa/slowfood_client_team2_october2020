@@ -12,13 +12,13 @@ const App = () => {
   return (
     <>
       <Header />
+      <Elements>
+        <CheckOut />
+      </Elements>
       <UserRegistration />
       <Grid textAlign='center'>
         <DisplayProducts />
         <OrderDetails />
-        <Elements>
-          <CheckOut />
-        </Elements>
       </Grid>
     </>
   )

@@ -18,6 +18,7 @@ const rootReducer = (state = initialState, action) => {
         orderDetails: action.payload,
         orderFinalized: false,
         paid: false,
+        paymentMessage: null,
       }
     case 'SET_ITEMS_COUNT_MESSAGE':
       return {
@@ -70,6 +71,21 @@ const rootReducer = (state = initialState, action) => {
       return {
         ...state,
         itemsCount: action.payload,
+      }
+    case 'OPEN_PAYMENT_FORM':
+      return {
+        ...state,
+        setPaymentOpen: true,
+      }
+    case 'CLOSE_PAYMENT_FORM':
+      return {
+        ...state,
+        setPaymentOpen: false,
+      }
+    case 'CLEAR_PAYMENT_MESSAGE':
+      return {
+        ...state,
+        paymentMessage: null,
       }
     default:
       return state

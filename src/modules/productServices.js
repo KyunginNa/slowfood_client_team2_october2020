@@ -66,6 +66,7 @@ const productServices = {
       { headers: credentials }
     )
     dispatch({ type: 'SET_ORDER_FINALIZED' })
+    dispatch({ type: 'OPEN_PAYMENT_FORM' })
   },
 }
 

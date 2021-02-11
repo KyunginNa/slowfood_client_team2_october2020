@@ -12,6 +12,7 @@ const payWithStripe = async (orderId, stripeToken, credentials, dispatch) => {
     )
     dispatch({ type: 'SET_PAYMENT_SUCCESS', payload: response.data.message })
     dispatch({ type: 'RESET_ORDER_DETAILS', payload: null })
+    dispatch({ type: 'CLOSE_PAYMENT_FORM' })
   } catch (err) {
     dispatch({
       type: 'SET_PAYMENT_FAIL',

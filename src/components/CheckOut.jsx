@@ -1,10 +1,12 @@
 import React from 'react'
 import { useSelector, useDispatch } from 'react-redux'
-import { CardCVCElement, CardExpiryElement, CardNumberElement, injectStripe } from 'react-stripe-elements'
 import stripePayment from '../modules/stripePayment'
+import { CardCVCElement, CardExpiryElement, CardNumberElement, injectStripe } from 'react-stripe-elements'
+import { Modal, Form, Button } from 'semantic-ui-react'
+import { Alert, AlertTitle } from '@material-ui/lab'
 
 const CheckOut = (props) => {
-  const { credentials, orderDetails, paymentMessage, paid, orderFinalized } = useSelector(state => state)
+  const { credentials, orderDetails, paymentMessage, paid, orderFinalized, setPaymentOpen } = useSelector(state => state)
   const dispatch = useDispatch()
 
   const payWithStripe = async (e) => {
@@ -13,30 +15,64 @@ const CheckOut = (props) => {
     stripePayment(orderDetails.id, stripeResponse.token.id, credentials, dispatch)
   }
 
+  const handleOpen = () => {
+    dispatch({ type: 'OPEN_PAYMENT_FORM' })
+  }
+
+  const handleClose = () => {
+    dispatch({ type: 'CLOSE_PAYMENT_FORM' })
+    dispatch({ type: 'CLEAR_PAYMENT_MESSAGE' })
+  }
+
   return (
     <>
       {!paid && orderFinalized &&
-        <form data-cy="payment-form">
-          <div data-cy="card-number">
-            <label>Card Number</label>
-            <CardNumberElement />
-          </div>
-          <div data-cy="card-expiry">
-            <label>Expiry Date</label>
-            <CardExpiryElement />
-          </div>
-          <div data-cy="card-cvc">
-            <label>CVC code</label>
-            <CardCVCElement />
-          </div>
-          <button
-            data-cy="btn-payment"
-            onClick={payWithStripe}>
-            Confrim Payment
-          </button>
-        </form>
+        <Modal open={setPaymentOpen} onClose={handleClose} onOpen={handleOpen}>
+          <Modal.Header>Payment</Modal.Header>
+          <Modal.Content>
+            <Form data-cy="payment-form" style={{ margin: 20 }}>
+              <Form.Field data-cy="card-number">
+                <label>Card Number</label>
+                <CardNumberElement />
+              </Form.Field >
+              <Form.Field data-cy="card-expiry">
+                <label>Expiry Date</label>
+                <CardExpiryElement />
+              </Form.Field>
+              <Form.Field data-cy="card-cvc">
+                <label>CVC code</label>
+                <CardCVCElement />
+              </Form.Field>
+            </Form>
+            {!paid &&
+              paymentMessage &&
+              <Alert severity="Error">
+                <AlertTitle>Error</AlertTitle>
+                {paymentMessage}
+              </Alert>
+            }
+          </Modal.Content>
+          <Modal.Actions>
+            <Button
+              data-cy="btn-payment"
+              onClick={payWithStripe}
+              basic
+              color='red'
+            >Confrim Payment
+            </Button>
+            <Button
+              onClick={handleClose}
+            >Cancel
+            </Button>
+          </Modal.Actions>
+        </Modal>
       }
-      {paid && <p data-cy="payment-message">{paymentMessage}</p>}
+      {paid &&
+        <Alert severity="success" data-cy="payment-message">
+          <AlertTitle>Success</AlertTitle>
+          {paymentMessage}
+        </Alert>
+      }
     </>
   )
 }
