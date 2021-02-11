@@ -80,8 +80,8 @@ describe('User can check out thier order', () => {
           cy.wrap($body).find('input[name="cvc"]').type('424', { delay: 10 })
         })
       })
-      cy.get("[data-cy='btn-payment']").click()
     })
+    cy.get("[data-cy='btn-payment']").click()
     cy.get("[data-cy='payment-message']").should(
       'contain',
       'Thank you! Your order will be ready in 20 minutes.'
