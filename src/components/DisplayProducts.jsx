@@ -3,11 +3,9 @@ import { useDispatch, useSelector } from 'react-redux'
 import productServices from '../modules/productServices'
 import { Card, CardHeader, CardActionArea, CardMedia, CardContent, Typography, CardActions, IconButton, Button } from '@material-ui/core'
 import AddShoppingCartIcon from '@material-ui/icons/AddShoppingCart'
-import { Container } from 'semantic-ui-react'
+import { Grid } from 'semantic-ui-react'
 
 const DisplayProducts = () => {
-  // const [renderOrder, setRenderOrder] = useState(false)
-
   const dispatch = useDispatch()
   const { products, credentials, orderDetails, orderFinalized } = useSelector(state => state)
   const handleOpen = () => {
@@ -16,10 +14,10 @@ const DisplayProducts = () => {
 
   useEffect(() => { productServices.getProducts(dispatch) }, [dispatch])
   return (
-    <Container data-cy='products-index'>
+    <Grid.Column width={12} data-cy='products-index'>
       {products && products.map(product => {
         return (
-          <Card data-cy='products-index' key={product.id} style={{ width: 345, height: 400, display: 'inline-block', margin: 10 }}>
+          <Card data-cy='products-index' key={product.id} style={{ width: 330, height: 420, display: 'inline-block', margin: 10 }}>
             <CardHeader
               title={product.name}
               subheader={product.price}
@@ -29,8 +27,8 @@ const DisplayProducts = () => {
                 image={`/images/product-${product.id}.jpg`}
                 style={{ height: 200 }}
               />
-              <CardContent>
-                <Typography variant='body1' component='p'>
+              <CardContent style={{ height: 100 }}>
+                <Typography variant='body1' component='p' style={{ textAlign: 'left' }}>
                   {product.description}
                 </Typography>
               </CardContent>
@@ -60,38 +58,7 @@ const DisplayProducts = () => {
           </Card>
         )
       })}
-    </Container>
-      /* {orderDetails &&
-        <>
-          <p data-cy="order-message">{orderMessage}</p>
-          <p data-cy="items-count-message">{itemsCountMessage}</p>
-          <button
-            data-cy="btn-view-order"
-            onClick={() => setRenderOrder(!renderOrder)}>
-            View Order
-          </button>
-          {
-            renderOrder &&
-            <>
-              <div data-cy="order-details">
-                <ul>
-                  {orderDetails.products.map(item => {
-                    return (
-                      <li key={item.id}>{item.amount} × {item.name}</li>
-                    )
-                  })}
-                </ul>
-                <p>Total Price: {orderDetails.total * 0.01} USD </p>
-                <button
-                  data-cy="btn-confirm-order"
-                  onClick={() => productServices.finalizeOrder(orderDetails, credentials, dispatch)}>
-                  Check Out
-              </button>
-              </div>
-            </>
-          }
-        </>
-      } */
+    </Grid.Column>
   )
 }
 

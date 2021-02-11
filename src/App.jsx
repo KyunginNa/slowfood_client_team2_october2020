@@ -5,17 +5,21 @@ import DisplayProducts from './components/DisplayProducts'
 import UserRegistration from './components/UserRegistration'
 import CheckOut from './components/CheckOut'
 import OrderDetails from './components/OrderDetails'
+import { Grid } from 'semantic-ui-react'
+
 
 const App = () => {
   return (
     <>
       <Header />
       <UserRegistration />
-      <DisplayProducts />
-      <OrderDetails />
-      <Elements>
-        <CheckOut />
-      </Elements>
+      <Grid textAlign='center'>
+        <DisplayProducts />
+        <OrderDetails />
+        <Elements>
+          <CheckOut />
+        </Elements>
+      </Grid>
     </>
   )
 }
