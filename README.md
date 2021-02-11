@@ -2,7 +2,7 @@
 
 ## Description
 
-This is a web application for ordering food. Registered users can add products in their order, review their current order, and check-out the order.
+This is a web application for ordering food. Registered users can add products to their order, review their current order, and check out the order.
 
 - User registration
 - Add products in an order
