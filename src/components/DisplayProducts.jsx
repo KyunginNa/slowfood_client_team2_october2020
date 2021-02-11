@@ -4,6 +4,7 @@ import CheckOut from './CheckOut'
 import productServices from '../modules/productServices'
 import { Card, CardHeader, CardActionArea, CardMedia, CardContent, Typography, CardActions, IconButton } from '@material-ui/core'
 import AddShoppingCartIcon from '@material-ui/icons/AddShoppingCart'
+import { Container } from 'semantic-ui-react'
 
 const DisplayProducts = () => {
   const [renderOrder, setRenderOrder] = useState(false)
@@ -14,10 +15,10 @@ const DisplayProducts = () => {
   useEffect(() => { productServices.getProducts(dispatch) }, [dispatch])
   return (
     <>
-      <div data-cy='products-index'>
+      <Container data-cy='products-index'>
         {products && products.map(product => {
           return (
-            <Card data-cy='products-index' key={product.id} style={{ maxWidth: 345, height: 400 }}>
+            <Card data-cy='products-index' key={product.id} style={{ width: 345, height: 400, display: 'inline-block', margin: 10 }}>
               <CardHeader
                 title={product.name}
                 subheader={product.price}
@@ -46,7 +47,7 @@ const DisplayProducts = () => {
             </Card>
           )
         })}
-      </div>
+      </Container>
       {orderDetails &&
         <>
           <p data-cy="order-message">{orderMessage}</p>
