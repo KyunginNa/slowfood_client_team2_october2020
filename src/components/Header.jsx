@@ -12,8 +12,10 @@ const Header = () => {
   return (
     <Menu size='large'>
       <Menu.Item>Welcome to K-Food!</Menu.Item>
-      {!credentials &&
-        <Menu.Item position='right'>
+      <Menu.Item position='right'>
+        {credentials ?
+          <p data-cy="message">Welcome, {credentials.uid}!</p>
+          :
           <Button
             icon
             labelPosition='right'
@@ -22,8 +24,8 @@ const Header = () => {
           >Sign Up
              <Icon name='user plus' />
           </Button>
-        </Menu.Item>
-      }
+        }
+      </Menu.Item>
     </Menu>
   )
 }

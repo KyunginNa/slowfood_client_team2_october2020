@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import CheckOut from './CheckOut'
 import productServices from '../modules/productServices'
-import { Card, CardHeader, CardActionArea, CardMedia, CardContent, Typography, CardActions, IconButton } from '@material-ui/core'
+import { Card, CardHeader, CardActionArea, CardMedia, CardContent, Typography, CardActions, IconButton, Button } from '@material-ui/core'
 import AddShoppingCartIcon from '@material-ui/icons/AddShoppingCart'
 import { Container } from 'semantic-ui-react'
 
@@ -11,6 +11,9 @@ const DisplayProducts = () => {
 
   const dispatch = useDispatch()
   const { products, credentials, orderDetails, itemsCountMessage, orderMessage, orderFinalized } = useSelector(state => state)
+  const handleOpen = () => {
+    dispatch({ type: 'OPEN_REGISTRATION_FORM' })
+  }
 
   useEffect(() => { productServices.getProducts(dispatch) }, [dispatch])
   return (
@@ -35,13 +38,25 @@ const DisplayProducts = () => {
                 </CardContent>
               </CardActionArea>
               <CardActions>
-                {credentials &&
-                  <IconButton
-                    data-cy={`btn-add-product${product.id}`}
-                    onClick={() => productServices.addToOrder(orderDetails, orderFinalized, product.id, product.name, credentials, dispatch)}
-                  >
-                    <AddShoppingCartIcon />
-                  </IconButton>
+                {credentials ?
+                  (
+                    <IconButton
+                      size='small'
+                      data-cy={`btn-add-product${product.id}`}
+                      onClick={() => productServices.addToOrder(orderDetails, orderFinalized, product.id, product.name, credentials, dispatch)}
+                    >
+                      <AddShoppingCartIcon />
+                    </IconButton>
+                  )
+                  :
+                  (
+                    <Button
+                      size='small'
+                      color='primary'
+                      onClick={handleOpen}
+                    >Sign up to add an item
+                    </Button>
+                  )
                 }
               </CardActions>
             </Card>

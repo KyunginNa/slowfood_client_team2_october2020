@@ -16,7 +16,7 @@ const UserRegistration = () => {
   }
   return (
     <>
-      {!credentials ?
+      {!credentials &&
         <Modal open={setRegistrationOpen} onClose={handleClose} onOpen={handleOpen}>
           <Modal.Header>Create An Account</Modal.Header>
           <Modal.Content>
@@ -36,8 +36,6 @@ const UserRegistration = () => {
             </Button>
           </Modal.Actions>
         </Modal>
-        :
-        <p data-cy="message">Welcome, {credentials.uid}!</p>
       }
     </>
   )
