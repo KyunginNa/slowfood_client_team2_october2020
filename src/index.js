@@ -5,7 +5,7 @@ import * as serviceWorker from './serviceWorker'
 import configureStore from './state/store/configureStore'
 import { Provider } from 'react-redux'
 import { StripeProvider } from 'react-stripe-elements'
-import 'fontsource-roboto'
+import 'semantic-ui-css/semantic.min.css'
 
 const store = configureStore()
 window.store = store

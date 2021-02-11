@@ -1,42 +1,43 @@
 import React from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import createAccount from '../modules/authentication'
+import { Modal, Button, Form } from 'semantic-ui-react'
 
-const UserRegistration = (e) => {
+const UserRegistration = () => {
   const dispatch = useDispatch()
-  const { credentials, errorMessage } = useSelector(state => state)
+  const { credentials, errorMessage, setRegistrationOpen } = useSelector(state => state)
 
+  const handleOpen = () => {
+    dispatch({ type: 'OPEN_REGISTRATION_FORM' })
+  }
+
+  const handleClose = () => {
+    dispatch({ type: 'CLOSE_REGISTRATION_FORM' })
+  }
   return (
     <>
-      {!credentials ? (
-        <>
-          <form onSubmit={event => createAccount(event, dispatch)}>
-            <input
-              type="email"
-              name="email"
-              data-cy="input-email"
-            />
-            <input
-              type="password"
-              name="password"
-              data-cy="input-password"
-            />
-            <input
-              type="password"
-              name="password_confirmation"
-              data-cy="input-password-confirmation"
-            />
-            <input
-              type="submit"
-              value="Submit"
-              data-cy="btn-submit"
-            />
-          </form>
-          {errorMessage}
-        </>
-      ) : (
-          <p data-cy="message">Welcome, {credentials.uid}!</p>
-        )
+      {!credentials ?
+        <Modal open={setRegistrationOpen} onClose={handleClose} onOpen={handleOpen}>
+          <Modal.Header>Create An Account</Modal.Header>
+          <Modal.Content>
+            To order food, please create an account here!
+            <Form onSubmit={event => createAccount(event, dispatch)}>
+              <Form.Input label='Email' type='email' id='email' />
+              <Form.Input label='Password' type='password' id='password' />
+              <Form.Input label='Password Confirmation' type='password' id='password_confirmation' />
+              <Button type="submit">Submit</Button>
+            </Form>
+            {errorMessage}
+          </Modal.Content>
+          <Modal.Actions>
+            <Button
+              onClick={handleClose}
+            >Cancel
+            </Button>
+          </Modal.Actions>
+        </Modal>
+        :
+        <p data-cy="message">Welcome, {credentials.uid}!</p>
       }
     </>
   )

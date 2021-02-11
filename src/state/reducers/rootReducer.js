@@ -1,4 +1,6 @@
-const rootReducer = (state = { credentials: null }, action) => {
+import initialState from '../store/initialState'
+
+const rootReducer = (state = initialState, action) => {
   switch (action.type) {
     case 'GET_PRODUCTS':
       return {
@@ -53,6 +55,16 @@ const rootReducer = (state = { credentials: null }, action) => {
       return {
         ...state,
         errorMessage: action.payload,
+      }
+    case 'OPEN_REGISTRATION_FORM':
+      return {
+        ...state,
+        setRegistrationOpen: true,
+      }
+    case 'CLOSE_REGISTRATION_FORM':
+      return {
+        ...state,
+        setRegistrationOpen: false,
       }
     default:
       return state
