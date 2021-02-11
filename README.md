@@ -1,4 +1,4 @@
-# Kitty News Client User
+# Slowfood Client
 
 ## Description
 
