@@ -22,8 +22,8 @@ const OrderDetails = () => {
             onClick={() => setRenderOrder(!renderOrder)}>
             <Button color='blue'>
               <Icon name='shopping cart' />
-            View Order
-          </Button>
+              View Order
+            </Button>
             <Label as='a' basic color='blue' pointing='left'>
               {itemsCount}
             </Label>
@@ -42,9 +42,17 @@ const OrderDetails = () => {
               </List>
               <p>Total Price: {orderDetails.total * 0.01} USD </p>
               <Button
+                as='div'
+                labelPosition='right'
                 data-cy="btn-confirm-order"
-                onClick={() => productServices.finalizeOrder(orderDetails, credentials, dispatch)}
-              >Check Out
+                onClick={() => productServices.finalizeOrder(orderDetails, credentials, dispatch)}>
+                <Button color='red'>
+                  <Icon name='credit card outline' />
+                  Check Out
+                </Button>
+                <Label as='a' basic color='red' pointing='left'>
+                  ${orderDetails.total * 0.01}
+                </Label>
               </Button>
             </Segment>
           }
