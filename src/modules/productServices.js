@@ -2,7 +2,7 @@ import axios from 'axios'
 
 const productServices = {
   async getProducts(dispatch) {
-    let products = await axios.get('http://localhost:3000/api/products')
+    let products = await axios.get('/products')
     dispatch({ type: 'GET_PRODUCTS', payload: products.data.products })
   },
 
@@ -16,7 +16,7 @@ const productServices = {
   ) {
     if (orderDetails && !orderFinalized) {
       let response = await axios.put(
-        `http://localhost:3000/api/orders/${orderDetails.id}`,
+        `/orders/${orderDetails.id}`,
         { product_id: productID },
         { headers: credentials }
       )
@@ -39,7 +39,7 @@ const productServices = {
       })
     } else {
       let response = await axios.post(
-        'http://localhost:3000/api/orders',
+        '/orders',
         { product_id: productID },
         { headers: credentials }
       )
@@ -61,7 +61,7 @@ const productServices = {
 
   async finalizeOrder(orderDetails, credentials, dispatch) {
     await axios.put(
-      `http://localhost:3000/api/orders/${orderDetails.id}`,
+      `/orders/${orderDetails.id}`,
       { activity: 'finalize' },
       { headers: credentials }
     )

@@ -3,7 +3,7 @@ import axios from 'axios'
 const payWithStripe = async (orderId, stripeToken, credentials, dispatch) => {
   try {
     const response = await axios.post(
-      'http://localhost:3000/api/payments',
+      '/payments',
       {
         order_id: orderId,
         stripeToken: stripeToken,

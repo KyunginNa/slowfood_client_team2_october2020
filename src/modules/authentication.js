@@ -6,12 +6,12 @@ const createAccount = async (event, dispatch) => {
   const password = event.target.password.value
   const password_confirmation = event.target.password_confirmation.value
   try {
-    let response = await axios.post('http://localhost:3000/api/auth', {
+    let response = await axios.post('/auth', {
       email: email,
       password: password,
       password_confirmation: password_confirmation,
     })
-    response = await axios.post('http://localhost:3000/api/auth/sign_in', {
+    response = await axios.post('/auth/sign_in', {
       email: email,
       password: password,
     })
