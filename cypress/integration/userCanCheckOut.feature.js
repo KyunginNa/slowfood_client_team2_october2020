@@ -33,6 +33,7 @@ describe('User can check out thier order', () => {
       response: 'fixture:second_product_added_to_order.json',
     })
     cy.visit('/')
+    cy.get("[data-cy='btn-sign-up']").click()
     cy.get("[data-cy='input-email']").type('test@test.com')
     cy.get("[data-cy='input-password']").type('password')
     cy.get("[data-cy='input-password-confirmation']").type('password')

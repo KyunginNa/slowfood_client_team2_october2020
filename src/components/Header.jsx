@@ -18,6 +18,7 @@ const Header = () => {
             icon
             labelPosition='right'
             onClick={handleOpen}
+            data-cy='btn-sign-up'
           >Sign Up
              <Icon name='user plus' />
           </Button>

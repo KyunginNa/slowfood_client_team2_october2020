@@ -22,10 +22,10 @@ const UserRegistration = () => {
           <Modal.Content>
             To order food, please create an account here!
             <Form onSubmit={event => createAccount(event, dispatch)}>
-              <Form.Input label='Email' type='email' id='email' />
-              <Form.Input label='Password' type='password' id='password' />
-              <Form.Input label='Password Confirmation' type='password' id='password_confirmation' />
-              <Button type="submit">Submit</Button>
+              <Form.Input label='Email' type='email' id='email' data-cy='input-email' />
+              <Form.Input label='Password' type='password' id='password' data-cy='input-password' />
+              <Form.Input label='Password Confirmation' type='password' id='password_confirmation' data-cy='input-password-confirmation' />
+              <Button type="submit" data-cy='btn-submit'>Submit</Button>
             </Form>
             {errorMessage}
           </Modal.Content>
