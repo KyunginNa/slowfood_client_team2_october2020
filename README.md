@@ -1,68 +1,81 @@
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+# Kitty News Client User
 
-## Available Scripts
+## Description
 
-In the project directory, you can run:
+This is a web application for ordering food. Registered users can add products in their order, review their current order, and check-out the order.
 
-### `yarn start`
+- User registration
+- Add products in an order
+- Review current order
+- Payment
 
-Runs the app in the development mode.<br />
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+## The code
 
-The page will reload if you make edits.<br />
-You will also see any lint errors in the console.
+- [Deployed App(Netlify)](https://kfood.netlify.app)
+- [Github](https://github.com/KyunginNa/slowfood_client_team2_october2020)
+- [API](https://github.com/KyunginNa/slowfood_api_team2_october2020)
 
-### `yarn test`
+## User stories
 
-Launches the test runner in the interactive watch mode.<br />
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+```
+As a visitor
+In order to get an overview of the restaurant's products
+I would like to be able to see a menu
+```
 
-### `yarn build`
+```
+As a user
+In order to be able to add product to an order
+I would like to be able to register an account
+```
 
-Builds the app for production to the `build` folder.<br />
-It correctly bundles React in production mode and optimizes the build for the best performance.
+```
+As a user
+In order to start ordering food
+I would like an order to be created when I add my first product
+```
 
-The build is minified and the filenames include the hashes.<br />
-Your app is ready to be deployed!
+```
+As a user
+In order to order the food that I want
+I would like to be able to update my order with more products
+```
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+```
+As a user
+In order to see my full order and a total price
+I would like to be able to see an order details view
+```
 
-### `yarn eject`
+```
+As a user
+In order to check out my order
+I would like to be able to pay with my card
+```
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+## Dependencies
+* material-ui/core
+* material-ui/icons
+* material-ui/lab
+* testing-library/jest-dom
+* testing-library/react
+* testing-library/user-event
+* axios
+* fontsource-roboto
+* react
+* react-dom
+* react-redux
+* react-scripts
+* react-stripe-elements
+* redux
+* semantic-ui-css
+* semantic-ui-react
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+## Acknowledgements
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+- [Craft Academy](https://www.craftacademy.se/) course material
+- Craft Academy coaches: [Thomas Ochman](https://github.com/tochman), [Emma-Maria Thalen](https://github.com/emtalen)
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
+## License
 
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/code-splitting
-
-### Analyzing the Bundle Size
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size
-
-### Making a Progressive Web App
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app
-
-### Advanced Configuration
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/advanced-configuration
-
-### Deployment
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/deployment
-
-### `yarn build` fails to minify
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify
+MIT License
