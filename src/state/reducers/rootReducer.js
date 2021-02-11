@@ -66,6 +66,11 @@ const rootReducer = (state = initialState, action) => {
         ...state,
         setRegistrationOpen: false,
       }
+    case 'SET_ITEMS_COUNT':
+      return {
+        ...state,
+        itemsCount: action.payload,
+      }
     default:
       return state
   }

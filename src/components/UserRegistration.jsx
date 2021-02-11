@@ -20,8 +20,8 @@ const UserRegistration = () => {
         <Modal open={setRegistrationOpen} onClose={handleClose} onOpen={handleOpen}>
           <Modal.Header>Create An Account</Modal.Header>
           <Modal.Content>
-            To order food, please create an account here!
-            <Form onSubmit={event => createAccount(event, dispatch)}>
+          To order food, please create an account here!
+            <Form onSubmit={event => createAccount(event, dispatch)} style={{ marginTop: 10 }}>
               <Form.Input label='Email' type='email' id='email' data-cy='input-email' />
               <Form.Input label='Password' type='password' id='password' data-cy='input-password' />
               <Form.Input label='Password Confirmation' type='password' id='password_confirmation' data-cy='input-password-confirmation' />

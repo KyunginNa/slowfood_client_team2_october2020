@@ -30,6 +30,10 @@ const productServices = {
         payload: `You have ${totalItems} items in your order.`,
       })
       dispatch({
+        type: 'SET_ITEMS_COUNT',
+        payload: totalItems,
+      })
+      dispatch({
         type: 'SET_ORDER_MESSAGE',
         payload: `${response.data.message} (1 × ${productName})`,
       })
@@ -43,6 +47,10 @@ const productServices = {
       dispatch({
         type: 'SET_ITEMS_COUNT_MESSAGE',
         payload: 'You have 1 item in your order.',
+      })
+      dispatch({
+        type: 'SET_ITEMS_COUNT',
+        payload: 1,
       })
       dispatch({
         type: 'SET_ORDER_MESSAGE',
